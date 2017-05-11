@@ -15,24 +15,32 @@ class Ship():
 		#store a decimal value for spaceship center 
 		self.center = float(self.rect.centerx)
 		
+		#start the new spaceship in the center bottom
+		self.rect.centerx = self.screen_rect.centerx
+		self.rect.bottom = self.screen_rect.bottom
+		
+		#stores decimal value for spaceship in the inner
+		self.center = float(self.rect.centerx)
+		
+		
 		#moviment flag
 		self.moving_right = False
 		self.moving_left = False
 		
-		#start the new spaceship in the center bottom
-		self.rect.centerx = self.screen_rect.centerx
-		self.rect.bottom = self.screen_rect.bottom
 	
 	def blitme(self):
 		""" DRAW A SPACE SHIP ON THE ACTUAL POSITION """
 		self.screen.blit(self.image,self.rect)
 	
 	def update(self):
-		''' UPDATE THE POSITION OF SPACE SHIP ACCORDING WITH MOVIMENT FLAG '''
-		if self.moving_right:
-			self.rect.centerx += 1
-		if self.moving_left:
-			selft.rect.centerx -=1
+		''' 
+			UPDATE THE POSITION OF SPACE SHIP ACCORDING WITH MOVIMENT FLAG
+			AND PREVENTS THE SAME GO OUT THE BORDERS
+		 '''
+		if self.moving_right and self.rect.right < self.screen_rect.right:
+			self.center += self.ai_settings.ship_speed_factor
+		if self.moving_left and self.rect.left > 0:
+			self.center -= self.ai_settings.ship_speed_factor
 			
 		#update the object rect according with self.center
 		self.rect.centerx = self.center
