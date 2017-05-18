@@ -1,47 +1,32 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
-	
-	def __init__(self,ai_settings,screen):
-		#CLASS CONSTRUCTOR
-		self.screen = screen
-		self.ai_settings = ai_settings
-		
-		#load the spaceship and get your rect
-		self.image = pygame.image.load('image/ship.png')
-		self.rect = self.image.get_rect()
-		self.screen_rect = screen.get_rect()
-		
-		#store a decimal value for spaceship center 
-		self.center = float(self.rect.centerx)
-		
-		#start the new spaceship in the center bottom
-		self.rect.centerx = self.screen_rect.centerx
-		self.rect.bottom = self.screen_rect.bottom
-		
-		#stores decimal value for spaceship in the inner
-		self.center = float(self.rect.centerx)
-		
-		
-		#moviment flag
-		self.moving_right = False
-		self.moving_left = False
-		
-	
-	def blitme(self):
-		""" DRAW A SPACE SHIP ON THE ACTUAL POSITION """
-		self.screen.blit(self.image,self.rect)
-	
-	def update(self):
-		''' 
-			UPDATE THE POSITION OF SPACE SHIP ACCORDING WITH MOVIMENT FLAG
-			AND PREVENTS THE SAME GO OUT THE BORDERS
-		 '''
-		if self.moving_right and self.rect.right < self.screen_rect.right:
-			self.center += self.ai_settings.ship_speed_factor
-		if self.moving_left and self.rect.left > 0:
-			self.center -= self.ai_settings.ship_speed_factor
-			
-		#update the object rect according with self.center
-		self.rect.centerx = self.center
-			
+class Ship(Sprite):
+    def __init__(self,ai_settings,screen):
+        super().__init__()
+        self.screen = screen
+        self.ai_settings = ai_settings
+        self.image = pygame.image.load('images/ship.bmp')
+        self.rect = self.image.get_rect()
+        self.screen_rect = screen.get_rect()
+        self.moving_right = False
+        self.moving_left = False
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom
+        self.center = float(self.rect.centerx)
+        
+    def blitme(self):
+        self.screen.blit(self.image,self.rect)
+
+    def update(self):
+        if self.moving_right and self.rect.right < self.screen_rect.right:
+            #self.rect.centerx +=1
+            self.center += self.ai_settings.ship_speed_factor
+
+        if self.moving_left and self.rect.left > 0:
+            self.center -= self.ai_settings.ship_speed_factor
+            #self.rect.centerx -= 1
+        self.rect.centerx = self.center
+
+    def center_ship(self):
+        self.center = self.screen_rect.centerx
